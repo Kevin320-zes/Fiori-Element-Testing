@@ -1,7 +1,7 @@
-using CatalogService as service from '../../srv/cat-service';
+using CatalogService from '../../srv/cat-service';
 
 // UI-level annotations
-annotate service.Items with @(
+annotate CatalogService.Items with @(
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
         Data : [
@@ -124,6 +124,22 @@ annotate service.Items with @(
     ],
     UI.LineItem : [
         {
+            $Type: 'UI.DataFieldForAction',
+            Action: 'CatalogService.testAction',
+            Label: 'Approve Order',
+            Inline: true
+        },
+        // {   
+        //     $Type: 'UI.DataFieldForAction', 
+        //     Action : 'service.testAction',
+        //     Label: 'Submit Order' 
+        // },
+        {   
+            $Type: 'UI.DataFieldForAction', 
+            Action : 'CatalogService.updateAction',
+            Label: 'update Order' 
+        },
+        {
             $Type : 'UI.DataField',
             Label : 'Item Name',
             Value : ItemName,
@@ -210,6 +226,11 @@ annotate service.Items with @(
             Value : SalesPastMonth,
             Label : 'Sales Past Month',
         },
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'CatalogService.testfunction',
+            Label : 'testfunction',
+        },
     ],
     UI.SelectionFields  : [
         Category_Category,
@@ -234,7 +255,7 @@ annotate service.Items with @(
 
 );
 
-annotate service.Categories with @(
+annotate CatalogService.Categories with @(
     UI.LineItem: [
         {
             $Type : 'UI.DataField',
@@ -257,7 +278,7 @@ annotate service.Categories with @(
 
 // Field-level annotations
 
-annotate service.Items with {
+annotate CatalogService.Items with {
     Status @Common.ValueList : {
         $Type : 'Common.ValueListType',
         CollectionPath : 'Status',
@@ -274,7 +295,7 @@ annotate service.Items with {
 
 
 
-annotate service.Items with {
+annotate CatalogService.Items with {
     Category @Common.ValueList : {
         $Type : 'Common.ValueListType',
         CollectionPath : 'Categories',
@@ -293,7 +314,7 @@ annotate service.Items with {
     Category @title : 'Category'
 };
 
-annotate service.Items with {
+annotate CatalogService.Items with {
     Seller @Common.ValueList : {
         $Type : 'Common.ValueListType',
         CollectionPath : 'Seller',
@@ -320,7 +341,7 @@ annotate service.Items with {
     Seller @title : 'Seller'
 };
 
-annotate service.Items with {
+annotate CatalogService.Items with {
     CountryOrigin @Common.ValueList : {
         $Type : 'Common.ValueListType',
         CollectionPath : 'Countries',
@@ -350,15 +371,22 @@ annotate service.Items with {
     }
 };
 
-annotate service.Categories with {
+annotate CatalogService.Categories with {
     Category @title : 'Category Name';
     CategoryDescription @title : 'Description'
 };
 
-annotate service.Seller with {
+annotate CatalogService.Seller with {
     SellerName @title : 'Seller Name';
     SellerDescription @title : 'Description';
     Region @title : 'Region';
     JoiningDate @title : 'Joining Date';
+};
+
+annotate CatalogService.Items with actions {
+ testAction @(
+        //Refresh value after action
+        Common.SideEffects.TargetProperties : ['in/ItemDescription']
+    ) 
 };
 

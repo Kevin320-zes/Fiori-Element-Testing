@@ -1,4 +1,4 @@
-const cds = require("@sap/cds");
+const cds = require ('@sap/cds'); require('./workarounds')
 
 module.exports = cds.service.impl(async function() {
     this.after('READ', 'Items', itemsData => {
@@ -18,4 +18,16 @@ module.exports = cds.service.impl(async function() {
     this.on('DELETE', 'Items', itemsData => {
         
     })
+
+    this.on('testfunction', itemsData => {
+        return "testFunction"
+    })
+
+    this.on('updateAction', req => {
+        req.data.test = 'asdfasdfasdf'
+    })
+    
+    this.on('testAction', req => UPDATE(req._target).with({ItemDescription: req.data.test}))
+
+
 })

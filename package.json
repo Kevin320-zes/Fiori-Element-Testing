@@ -6,20 +6,22 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@cap-js/hana": "^1",
     "@sap/cds": "^8",
     "express": "^4",
-    "@cap-js/hana": "^1"
+    "sqlite": "^5.1.1"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.6",
     "@cap-js/sqlite": "^1",
     "@sap/cds-dk": "^8",
-    "rimraf": "^5.0.5",
-    "@sap/ux-specification": "UI5-1.128"
+    "@sap/ux-specification": "UI5-1.128",
+    "rimraf": "^5.0.5"
   },
   "scripts": {
     "start": "cds-serve",
     "watch-sap-fiori-app": "cds watch --open sap-fiori-app/webapp/index.html?sap-ui-xx-viewCache=false",
+    "int-test": "fiori run --open 'test/integration/opaTests.qunit.html'",
     "undeploy": "cf undeploy SAPFioriBrownbag --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
@@ -27,7 +29,10 @@
   "cds": {
     "requires": {
       "db": {
-        "kind": "hana"
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db.sqlite"
+        }
       }
     },
     "sql": {

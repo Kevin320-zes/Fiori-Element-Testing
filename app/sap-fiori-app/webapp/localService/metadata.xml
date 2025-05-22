@@ -1,0 +1,861 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+<edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+<edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+</edmx:Reference>
+<edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+</edmx:Reference>
+<edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+<edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+</edmx:Reference>
+<edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/HTML5.xml">
+<edmx:Include Alias="HTML5" Namespace="com.sap.vocabularies.HTML5.v1"/>
+</edmx:Reference>
+<edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+</edmx:Reference>
+<edmx:DataServices>
+<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="CatalogService">
+<Annotation Term="Core.Links">
+<Collection>
+<Record>
+<PropertyValue Property="rel" String="author"/>
+<PropertyValue Property="href" String="https://cap.cloud.sap"/>
+</Record>
+</Collection>
+</Annotation>
+<EntityContainer Name="EntityContainer">
+<EntitySet Name="Books" EntityType="CatalogService.Books"/>
+<EntitySet Name="Items" EntityType="CatalogService.Items">
+<NavigationPropertyBinding Path="Category" Target="Categories"/>
+<NavigationPropertyBinding Path="Seller" Target="Seller"/>
+<NavigationPropertyBinding Path="CountryOrigin" Target="Countries"/>
+<NavigationPropertyBinding Path="SiblingEntity" Target="Items"/>
+</EntitySet>
+<EntitySet Name="Categories" EntityType="CatalogService.Categories"/>
+<EntitySet Name="Seller" EntityType="CatalogService.Seller"/>
+<EntitySet Name="Countries" EntityType="CatalogService.Countries"/>
+<EntitySet Name="Status" EntityType="CatalogService.Status"/>
+</EntityContainer>
+<EntityType Name="Books">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="title" Type="Edm.String"/>
+<Property Name="stock" Type="Edm.Int32"/>
+</EntityType>
+<EntityType Name="Items">
+<Key>
+<PropertyRef Name="ID"/>
+<PropertyRef Name="UUID"/>
+<PropertyRef Name="IsActiveEntity"/>
+</Key>
+<Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+<Property Name="UUID" Type="Edm.Guid" Nullable="false"/>
+<Property Name="ItemName" Type="Edm.String"/>
+<Property Name="ItemDescription" Type="Edm.String"/>
+<Property Name="ListingExpDate" Type="Edm.Date"/>
+<Property Name="Status" Type="Edm.String"/>
+<Property Name="InStock" Type="Edm.Int32"/>
+<NavigationProperty Name="Category" Type="CatalogService.Categories">
+<ReferentialConstraint Property="Category_Category" ReferencedProperty="Category"/>
+</NavigationProperty>
+<Property Name="Category_Category" Type="Edm.String"/>
+<NavigationProperty Name="Seller" Type="CatalogService.Seller">
+<ReferentialConstraint Property="Seller_SellerName" ReferencedProperty="SellerName"/>
+</NavigationProperty>
+<Property Name="Seller_SellerName" Type="Edm.String"/>
+<NavigationProperty Name="CountryOrigin" Type="CatalogService.Countries">
+<ReferentialConstraint Property="CountryOrigin_Country" ReferencedProperty="Country"/>
+</NavigationProperty>
+<Property Name="CountryOrigin_Country" Type="Edm.String"/>
+<Property Name="TotalSales" Type="Edm.Int32"/>
+<Property Name="SalesPastMonth" Type="Edm.Int32"/>
+<Property Name="Trend" Type="Edm.String"/>
+<Property Name="StatusCriticality" Type="Edm.Int32"/>
+<Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+<Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+<Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+<NavigationProperty Name="DraftAdministrativeData" Type="CatalogService.DraftAdministrativeData" ContainsTarget="true"/>
+<NavigationProperty Name="SiblingEntity" Type="CatalogService.Items"/>
+</EntityType>
+<EntityType Name="Categories">
+<Key>
+<PropertyRef Name="Category"/>
+</Key>
+<Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="Category" Type="Edm.String" Nullable="false"/>
+<Property Name="CategoryDescription" Type="Edm.String"/>
+<Property Name="CategoryRank" Type="Edm.String"/>
+</EntityType>
+<EntityType Name="Seller">
+<Key>
+<PropertyRef Name="SellerName"/>
+</Key>
+<Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="SellerName" Type="Edm.String" Nullable="false"/>
+<Property Name="SellerDescription" Type="Edm.String"/>
+<Property Name="Region" Type="Edm.String"/>
+<Property Name="JoiningDate" Type="Edm.String"/>
+</EntityType>
+<EntityType Name="Countries">
+<Key>
+<PropertyRef Name="Country"/>
+</Key>
+<Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="Country" Type="Edm.String" Nullable="false"/>
+<Property Name="CategoryDescription" Type="Edm.String"/>
+<Property Name="DistributionCapital" Type="Edm.String"/>
+<Property Name="Curency" Type="Edm.String"/>
+<Property Name="HQLocation" Type="Edm.String"/>
+</EntityType>
+<EntityType Name="Status">
+<Key>
+<PropertyRef Name="StatusName"/>
+</Key>
+<Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+<Property Name="StatusId" Type="Edm.Int32"/>
+<Property Name="StatusName" Type="Edm.String" Nullable="false"/>
+</EntityType>
+<EntityType Name="DraftAdministrativeData">
+<Key>
+<PropertyRef Name="DraftUUID"/>
+</Key>
+<Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+<Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+<Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+<Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+<Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+<Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+</EntityType>
+<TypeDefinition Name="Percentage" UnderlyingType="Edm.Int32"/>
+<Function Name="testfunction" IsBound="true" IsComposable="false">
+<Parameter Name="in" Type="CatalogService.Items"/>
+<ReturnType Type="Edm.String"/>
+</Function>
+<Action Name="testAction" IsBound="true">
+<Parameter Name="in" Type="CatalogService.Items"/>
+<Parameter Name="test" Type="Edm.String"/>
+<ReturnType Type="Edm.String"/>
+</Action>
+<Action Name="updateAction" IsBound="true">
+<Parameter Name="in" Type="CatalogService.Items"/>
+</Action>
+<Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+<Parameter Name="in" Type="CatalogService.Items"/>
+<Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+<ReturnType Type="CatalogService.Items"/>
+</Action>
+<Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+<Parameter Name="in" Type="CatalogService.Items"/>
+<ReturnType Type="CatalogService.Items"/>
+</Action>
+<Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+<Parameter Name="in" Type="CatalogService.Items"/>
+<Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+<ReturnType Type="CatalogService.Items"/>
+</Action>
+<Annotations Target="CatalogService.EntityContainer/Books">
+<Annotation Term="Capabilities.DeleteRestrictions">
+<Record Type="Capabilities.DeleteRestrictionsType">
+<PropertyValue Property="Deletable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.InsertRestrictions">
+<Record Type="Capabilities.InsertRestrictionsType">
+<PropertyValue Property="Insertable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.UpdateRestrictions">
+<Record Type="Capabilities.UpdateRestrictionsType">
+<PropertyValue Property="Updatable" Bool="false"/>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.Items">
+<Annotation Term="UI.FieldGroup" Qualifier="GeneratedGroup">
+<Record Type="UI.FieldGroupType">
+<PropertyValue Property="Data">
+<Collection>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Item Name"/>
+<PropertyValue Property="Value" Path="ItemName"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Item Description"/>
+<PropertyValue Property="Value" Path="ItemDescription"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Expiration Date"/>
+<PropertyValue Property="Value" Path="ListingExpDate"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Status"/>
+<PropertyValue Property="Value" Path="Status"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="In Stock"/>
+<PropertyValue Property="Value" Path="InStock"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Category"/>
+<PropertyValue Property="Value" Path="Category_Category"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Seller"/>
+<PropertyValue Property="Value" Path="Seller_SellerName"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Country"/>
+<PropertyValue Property="Value" Path="CountryOrigin_Country"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Total Sales"/>
+<PropertyValue Property="Value" Path="TotalSales"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Sales Pas Month"/>
+<PropertyValue Property="Value" Path="SalesPastMonth"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+<Annotation Term="UI.FieldGroup" Qualifier="SellerInfo">
+<Record Type="UI.FieldGroupType">
+<PropertyValue Property="Data">
+<Collection>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Seller/SellerName"/>
+<PropertyValue Property="Label" String="Seller Name"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Seller/SellerDescription"/>
+<PropertyValue Property="Label" String="Seller Description"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Seller/Region"/>
+<PropertyValue Property="Label" String="Region"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Seller/JoiningDate"/>
+<PropertyValue Property="Label" String="Joining Date"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+<Annotation Term="UI.FieldGroup" Qualifier="CategoryInfo">
+<Record Type="UI.FieldGroupType">
+<PropertyValue Property="Data">
+<Collection>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Category/Category"/>
+<PropertyValue Property="Label" String="Category"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Category/CategoryDescription"/>
+<PropertyValue Property="Label" String="Category Description"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Category/CategoryRank"/>
+<PropertyValue Property="Label" String="Category Rank"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+<Annotation Term="UI.Facets">
+<Collection>
+<Record Type="UI.ReferenceFacet">
+<PropertyValue Property="ID" String="GeneratedFacet1"/>
+<PropertyValue Property="Label" String="Item Information"/>
+<PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneratedGroup"/>
+</Record>
+<Record Type="UI.ReferenceFacet">
+<PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#SellerInfo"/>
+<PropertyValue Property="Label" String="Seller Information"/>
+<PropertyValue Property="ID" String="SellerInfoId1"/>
+</Record>
+<Record Type="UI.ReferenceFacet">
+<PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#CategoryInfo"/>
+<PropertyValue Property="Label" String="Category Information"/>
+<PropertyValue Property="ID" String="CategoryInfoId1"/>
+</Record>
+</Collection>
+</Annotation>
+<Annotation Term="UI.LineItem">
+<Collection>
+<Record Type="UI.DataFieldForAction">
+<PropertyValue Property="Action" String="CatalogService.testAction"/>
+<PropertyValue Property="Label" String="Approve Order"/>
+<PropertyValue Property="Inline" Bool="true"/>
+</Record>
+<Record Type="UI.DataFieldForAction">
+<PropertyValue Property="Action" String="CatalogService.updateAction"/>
+<PropertyValue Property="Label" String="update Order"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Item Name"/>
+<PropertyValue Property="Value" Path="ItemName"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Item Description"/>
+<PropertyValue Property="Value" Path="ItemDescription"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Expiration Date"/>
+<PropertyValue Property="Value" Path="ListingExpDate"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="Status"/>
+<PropertyValue Property="Value" Path="Status"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+<PropertyValue Property="Criticality" Path="StatusCriticality"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Label" String="In Stock"/>
+<PropertyValue Property="Value" Path="InStock"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Seller/SellerName"/>
+<PropertyValue Property="Label" String="Seller Name"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Seller/Region"/>
+<PropertyValue Property="Label" String="Region Code"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Category/Category"/>
+<PropertyValue Property="Label" String="Category"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Category/CategoryDescription"/>
+<PropertyValue Property="Label" String="Category Description"/>
+<Annotation Term="HTML5.CssDefaults">
+<Record Type="HTML5.CssDefaultsType">
+<PropertyValue Property="width" String="100%"/>
+</Record>
+</Annotation>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="SalesPastMonth"/>
+<PropertyValue Property="Label" String="Sales Past Month"/>
+</Record>
+<Record Type="UI.DataFieldForAction">
+<PropertyValue Property="Action" String="CatalogService.testfunction"/>
+<PropertyValue Property="Label" String="testfunction"/>
+</Record>
+</Collection>
+</Annotation>
+<Annotation Term="UI.SelectionFields">
+<Collection>
+<PropertyPath>Category_Category</PropertyPath>
+<PropertyPath>Seller_SellerName</PropertyPath>
+<PropertyPath>Status</PropertyPath>
+</Collection>
+</Annotation>
+<Annotation Term="UI.HeaderInfo">
+<Record Type="UI.HeaderInfoType">
+<PropertyValue Property="TypeName" String="Item"/>
+<PropertyValue Property="TypeNamePlural" String="Items"/>
+<PropertyValue Property="Title">
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="ItemName"/>
+<PropertyValue Property="Label" String="Item Name"/>
+</Record>
+</PropertyValue>
+<PropertyValue Property="Description">
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="ItemDescription"/>
+<PropertyValue Property="Label" String="Item Description"/>
+</Record>
+</PropertyValue>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.EntityContainer/Items">
+<Annotation Term="Capabilities.InsertRestrictions">
+<Record Type="Capabilities.InsertRestrictionsType">
+<PropertyValue Property="Insertable" Bool="true"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.UpdateRestrictions">
+<Record Type="Capabilities.UpdateRestrictionsType">
+<PropertyValue Property="Updatable" Bool="true"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.DeleteRestrictions">
+<Record Type="Capabilities.DeleteRestrictionsType">
+<PropertyValue Property="Deletable" Bool="true"/>
+</Record>
+</Annotation>
+<Annotation Term="Common.DraftRoot">
+<Record Type="Common.DraftRootType">
+<PropertyValue Property="ActivationAction" String="CatalogService.draftActivate"/>
+<PropertyValue Property="EditAction" String="CatalogService.draftEdit"/>
+<PropertyValue Property="PreparationAction" String="CatalogService.draftPrepare"/>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.Items/createdAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Created On"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/createdBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Created By"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/modifiedAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Changed On"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/modifiedBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Changed By"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/ID">
+<Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/UUID">
+<Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/Status">
+<Annotation Term="Common.ValueList">
+<Record Type="Common.ValueListType">
+<PropertyValue Property="CollectionPath" String="Status"/>
+<PropertyValue Property="Parameters">
+<Collection>
+<Record Type="Common.ValueListParameterInOut">
+<PropertyValue Property="LocalDataProperty" PropertyPath="Status"/>
+<PropertyValue Property="ValueListProperty" String="StatusName"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+<Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/Category">
+<Annotation Term="Common.Label" String="Category"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/Category_Category">
+<Annotation Term="Common.ValueList">
+<Record Type="Common.ValueListType">
+<PropertyValue Property="CollectionPath" String="Categories"/>
+<PropertyValue Property="Parameters">
+<Collection>
+<Record Type="Common.ValueListParameterInOut">
+<PropertyValue Property="LocalDataProperty" PropertyPath="Category_Category"/>
+<PropertyValue Property="ValueListProperty" String="Category"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="CategoryDescription"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+<Annotation Term="Common.Label" String="Category"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/Seller">
+<Annotation Term="Common.Label" String="Seller"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/Seller_SellerName">
+<Annotation Term="Common.ValueList">
+<Record Type="Common.ValueListType">
+<PropertyValue Property="CollectionPath" String="Seller"/>
+<PropertyValue Property="Parameters">
+<Collection>
+<Record Type="Common.ValueListParameterInOut">
+<PropertyValue Property="LocalDataProperty" PropertyPath="Seller_SellerName"/>
+<PropertyValue Property="ValueListProperty" String="SellerName"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="SellerDescription"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="Region"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="JoiningDate"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+<Annotation Term="Common.Label" String="Seller"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/CountryOrigin_Country">
+<Annotation Term="Common.ValueList">
+<Record Type="Common.ValueListType">
+<PropertyValue Property="CollectionPath" String="Countries"/>
+<PropertyValue Property="Parameters">
+<Collection>
+<Record Type="Common.ValueListParameterInOut">
+<PropertyValue Property="LocalDataProperty" PropertyPath="CountryOrigin_Country"/>
+<PropertyValue Property="ValueListProperty" String="Country"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="CategoryDescription"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="DistributionCapital"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="Curency"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="HQLocation"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.Items/IsActiveEntity">
+<Annotation Term="UI.Hidden" Bool="true"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/HasActiveEntity">
+<Annotation Term="UI.Hidden" Bool="true"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/HasDraftEntity">
+<Annotation Term="UI.Hidden" Bool="true"/>
+</Annotations>
+<Annotations Target="CatalogService.Items/DraftAdministrativeData">
+<Annotation Term="UI.Hidden" Bool="true"/>
+</Annotations>
+<Annotations Target="CatalogService.testAction(CatalogService.Items)">
+<Annotation Term="Common.SideEffects">
+<Record Type="Common.SideEffectsType">
+<PropertyValue Property="TargetProperties">
+<Collection>
+<String>in/ItemDescription</String>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.testAction(CatalogService.Items)/test">
+<Annotation Term="Common.Label" String="approveOrder.note"/>
+</Annotations>
+<Annotations Target="CatalogService.Categories">
+<Annotation Term="UI.LineItem">
+<Collection>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="Category"/>
+<PropertyValue Property="Label" String="Category"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="CategoryDescription"/>
+<PropertyValue Property="Label" String="Category Description"/>
+</Record>
+<Record Type="UI.DataField">
+<PropertyValue Property="Value" Path="CategoryRank"/>
+<PropertyValue Property="Label" String="Category Rank"/>
+</Record>
+</Collection>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.EntityContainer/Categories">
+<Annotation Term="Capabilities.DeleteRestrictions">
+<Record Type="Capabilities.DeleteRestrictionsType">
+<PropertyValue Property="Deletable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.InsertRestrictions">
+<Record Type="Capabilities.InsertRestrictionsType">
+<PropertyValue Property="Insertable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.UpdateRestrictions">
+<Record Type="Capabilities.UpdateRestrictionsType">
+<PropertyValue Property="Updatable" Bool="false"/>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.Categories/createdAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Created On"/>
+</Annotations>
+<Annotations Target="CatalogService.Categories/createdBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Created By"/>
+</Annotations>
+<Annotations Target="CatalogService.Categories/modifiedAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Changed On"/>
+</Annotations>
+<Annotations Target="CatalogService.Categories/modifiedBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Changed By"/>
+</Annotations>
+<Annotations Target="CatalogService.Categories/Category">
+<Annotation Term="Common.Label" String="Category Name"/>
+</Annotations>
+<Annotations Target="CatalogService.Categories/CategoryDescription">
+<Annotation Term="Common.Label" String="Description"/>
+</Annotations>
+<Annotations Target="CatalogService.EntityContainer/Seller">
+<Annotation Term="Capabilities.DeleteRestrictions">
+<Record Type="Capabilities.DeleteRestrictionsType">
+<PropertyValue Property="Deletable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.InsertRestrictions">
+<Record Type="Capabilities.InsertRestrictionsType">
+<PropertyValue Property="Insertable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.UpdateRestrictions">
+<Record Type="Capabilities.UpdateRestrictionsType">
+<PropertyValue Property="Updatable" Bool="false"/>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.Seller/createdAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Created On"/>
+</Annotations>
+<Annotations Target="CatalogService.Seller/createdBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Created By"/>
+</Annotations>
+<Annotations Target="CatalogService.Seller/modifiedAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Changed On"/>
+</Annotations>
+<Annotations Target="CatalogService.Seller/modifiedBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Changed By"/>
+</Annotations>
+<Annotations Target="CatalogService.Seller/SellerName">
+<Annotation Term="Common.Label" String="Seller Name"/>
+</Annotations>
+<Annotations Target="CatalogService.Seller/SellerDescription">
+<Annotation Term="Common.Label" String="Description"/>
+</Annotations>
+<Annotations Target="CatalogService.Seller/Region">
+<Annotation Term="Common.Label" String="Region"/>
+</Annotations>
+<Annotations Target="CatalogService.Seller/JoiningDate">
+<Annotation Term="Common.Label" String="Joining Date"/>
+</Annotations>
+<Annotations Target="CatalogService.EntityContainer/Countries">
+<Annotation Term="Capabilities.DeleteRestrictions">
+<Record Type="Capabilities.DeleteRestrictionsType">
+<PropertyValue Property="Deletable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.InsertRestrictions">
+<Record Type="Capabilities.InsertRestrictionsType">
+<PropertyValue Property="Insertable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.UpdateRestrictions">
+<Record Type="Capabilities.UpdateRestrictionsType">
+<PropertyValue Property="Updatable" Bool="false"/>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.Countries/createdAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Created On"/>
+</Annotations>
+<Annotations Target="CatalogService.Countries/createdBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Created By"/>
+</Annotations>
+<Annotations Target="CatalogService.Countries/modifiedAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Changed On"/>
+</Annotations>
+<Annotations Target="CatalogService.Countries/modifiedBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Changed By"/>
+</Annotations>
+<Annotations Target="CatalogService.EntityContainer/Status">
+<Annotation Term="Capabilities.DeleteRestrictions">
+<Record Type="Capabilities.DeleteRestrictionsType">
+<PropertyValue Property="Deletable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.InsertRestrictions">
+<Record Type="Capabilities.InsertRestrictionsType">
+<PropertyValue Property="Insertable" Bool="false"/>
+</Record>
+</Annotation>
+<Annotation Term="Capabilities.UpdateRestrictions">
+<Record Type="Capabilities.UpdateRestrictionsType">
+<PropertyValue Property="Updatable" Bool="false"/>
+</Record>
+</Annotation>
+</Annotations>
+<Annotations Target="CatalogService.Status/createdAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Created On"/>
+</Annotations>
+<Annotations Target="CatalogService.Status/createdBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Immutable" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Created By"/>
+</Annotations>
+<Annotations Target="CatalogService.Status/modifiedAt">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Common.Label" String="Changed On"/>
+</Annotations>
+<Annotations Target="CatalogService.Status/modifiedBy">
+<Annotation Term="UI.HiddenFilter" Bool="true"/>
+<Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+<Annotation Term="Core.Computed" Bool="true"/>
+<Annotation Term="Core.Description" String="User's unique ID"/>
+<Annotation Term="Common.Label" String="Changed By"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData">
+<Annotation Term="Common.Label" String="Draft Administrative Data"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData/DraftUUID">
+<Annotation Term="UI.Hidden" Bool="true"/>
+<Annotation Term="Common.Label" String="Draft (Technical ID)"/>
+<Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData/CreationDateTime">
+<Annotation Term="Common.Label" String="Draft Created On"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData/CreatedByUser">
+<Annotation Term="Common.Label" String="Draft Created By"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData/DraftIsCreatedByMe">
+<Annotation Term="UI.Hidden" Bool="true"/>
+<Annotation Term="Common.Label" String="Draft Created By Me"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData/LastChangeDateTime">
+<Annotation Term="Common.Label" String="Draft Last Changed On"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData/LastChangedByUser">
+<Annotation Term="Common.Label" String="Draft Last Changed By"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData/InProcessByUser">
+<Annotation Term="Common.Label" String="Draft In Process By"/>
+</Annotations>
+<Annotations Target="CatalogService.DraftAdministrativeData/DraftIsProcessedByMe">
+<Annotation Term="UI.Hidden" Bool="true"/>
+<Annotation Term="Common.Label" String="Draft In Process By Me"/>
+</Annotations>
+</Schema>
+</edmx:DataServices>
+</edmx:Edmx>

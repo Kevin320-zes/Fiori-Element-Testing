@@ -116,6 +116,18 @@
                     "type": "ResponsiveTable"
                   }
                 }
+              },
+              "content": {
+                "header": {
+                  "actions": {
+                    "extraAction": {
+                      "press": "sapfioriapp.sapfioriapp.ext.controller.ExtraButton.onPressExtraButton",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "Button Test"
+                    }
+                  }
+                }
               }
             }
           }
